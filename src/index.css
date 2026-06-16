@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Caveat:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-logo: "Black Ops One", system-ui;
+  --font-body: "Inter", sans-serif;
+  --font-hand: "Caveat", cursive;
+}
+
+body {
+  font-family: var(--font-body);
+}
