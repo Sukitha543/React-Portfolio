@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar';
 import MainContent from './components/MainContent';
 import Education from './components/Education';
 import Projects from './components/Projects';
+import Skills from './components/Skills';
 import Footer from './components/Footer';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             {activeSection === 'home' && <MainContent />}
             {activeSection === 'education' && <Education />}
             {activeSection === 'projects' && <Projects />}
+            {activeSection === 'skills' && <Skills />}
           </motion.div>
         </AnimatePresence>
       </main>

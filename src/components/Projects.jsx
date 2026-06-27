@@ -1,85 +1,68 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 import { FaGithub } from 'react-icons/fa';
 
 const Projects = () => {
-  const projectList = [
-    {
-      title: 'Resto Mania (Flutter)',
-      subtitle: '',
-      link: '#',
-      github: '#',
-      description: 'A comprehensive restaurant management mobile application built with Flutter, featuring real-time menu updates and order tracking.',
-      color: 'bg-orange-200',
-    },
-    {
-      title: 'Furniture Website ( React + PHP )',
-      subtitle: '',
-      link: '#',
-      github: '#',
-      description: 'An elegant e-commerce platform for furniture, integrating a React frontend with a robust PHP backend for inventory management.',
-      color: 'bg-slate-500',
-    },
-    {
-      title: 'Case Study E - Learning Website',
-      subtitle: '',
-      link: '#',
-      github: '#',
-      description: 'A detailed UI/UX case study and prototype for a modern e-learning platform, focusing on user engagement and accessibility.',
-      color: 'bg-purple-200',
-    },
-    {
-      title: 'Responsive Design Demo (Figma)',
-      subtitle: '',
-      link: '#',
-      github: '#',
-      description: 'A collection of highly responsive UI components designed in Figma, ready to be handed off to developers.',
-      color: 'bg-gray-300',
-    },
-    {
-      title: 'Industri Metrics - Android App',
-      subtitle: '',
-      link: '#',
-      github: '#',
-      description: 'An industrial metrics tracking application providing real-time analytics and data visualization for factory floors.',
-      color: 'bg-blue-600',
-    },
-    {
-      title: 'Wallpaper App - Android App',
-      subtitle: '',
-      link: '#',
-      github: '#',
-      description: 'A vibrant wallpaper application allowing users to browse, download, and set high-resolution wallpapers directly from their device.',
-      color: 'bg-gray-400',
-    },
-  ];
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProjects = async () => {
+    try {
+      setLoading(true);
+      const querySnapshot = await getDocs(collection(db, 'projects')); // Connects to Firestore Connection
+
+      const projectData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      setProjects(projectData);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    } finally {
+      setLoading(false);
+    }
+
+  };
+  // This will fetch all projects from the 'projects' collection in Firestore
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="w-10 h-10 border-4 border-[#B89C62] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 bg-[#111111] border border-[#B89C62] rounded-xl p-8 lg:p-10 shadow-lg shadow-black/50">
       <h2 className="text-white text-3xl font-bold mb-8">Projects</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {projectList.map((project, index) => (
+        {projects.map((project, index) => (
           <div
             key={index}
             className="group relative bg-[#1A1A1A] border border-gray-800 hover:border-[#B89C62] rounded-xl p-4 transition-all overflow-hidden flex flex-col"
           >
-            {/* Image Placeholder */}
-            <div className={`w-full h-48 rounded-lg mb-4 flex items-center justify-center shadow-inner ${project.color}`}>
-              {/* Replace this div with an actual <img> tag when you have the assets */}
-              <span className="text-black/50 font-bold text-lg uppercase px-4 text-center">
-                {project.title} Image
-              </span>
+            {/* Project Image */}
+            <div className="w-full h-48 rounded-lg mb-4 overflow-hidden border border-gray-700">
+              {project.imageUrl ? (
+                <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gray-800">
+                  <span className="text-gray-500 font-bold">No Image</span>
+                </div>
+              )}
             </div>
 
             {/* Details */}
             <div className="flex justify-between items-start mt-auto">
               <div>
                 <h3 className="text-white font-bold text-lg leading-tight mb-1">{project.title}</h3>
-                {project.subtitle && (
-                  <a href={project.link} className="text-[#B89C62] text-xs hover:underline">
-                    {project.subtitle}
-                  </a>
-                )}
               </div>
               <a
                 href={project.github}
