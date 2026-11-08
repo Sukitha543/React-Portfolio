@@ -7,6 +7,7 @@ import Education from './components/Education';
 import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
+import GoldenConstellation from './components/GoldenConstellation';
 import Footer from './components/Footer';
 
 function App() {
@@ -19,32 +20,36 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#121212] font-body flex flex-col overflow-x-hidden">
-      <Navbar activeSection={activeSection} setActiveSection={setActiveSection} />
+    <div className="relative min-h-screen bg-[#121212] font-body overflow-x-hidden">
+      <GoldenConstellation />
 
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-8 py-8 flex flex-col lg:flex-row gap-8 items-start">
-        <Sidebar />
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar activeSection={activeSection} setActiveSection={setActiveSection} />
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeSection}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            variants={variants}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="flex-1 w-full"
-          >
-            {activeSection === 'home' && <MainContent />}
-            {activeSection === 'education' && <Education />}
-            {activeSection === 'projects' && <Projects />}
-            {activeSection === 'skills' && <Skills />}
-            {activeSection === 'contact' && <Contact />}
-          </motion.div>
-        </AnimatePresence>
-      </main>
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-8 py-8 flex flex-col lg:flex-row gap-8 items-start">
+          <Sidebar />
 
-      <Footer />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeSection}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={variants}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="flex-1 w-full"
+            >
+              {activeSection === 'home' && <MainContent />}
+              {activeSection === 'education' && <Education />}
+              {activeSection === 'projects' && <Projects />}
+              {activeSection === 'skills' && <Skills />}
+              {activeSection === 'contact' && <Contact />}
+            </motion.div>
+          </AnimatePresence>
+        </main>
+
+        <Footer />
+      </div>
     </div>
   );
 }
